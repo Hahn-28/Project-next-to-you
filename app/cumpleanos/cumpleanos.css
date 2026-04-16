@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  background: #000;
+  color: #fff;
+}
+
+/* Fondo galaxia */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at top, #1a0033 0%, #000000 50%),
+              radial-gradient(ellipse at bottom, #0d0033 0%, #000000 50%);
+  z-index: -2;
+}
+
+/* Estrellas animadas */
+.stars,
+.stars2,
+.stars3 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.stars {
+  background: transparent;
+  box-shadow: 
+    100px 100px #fff, 200px 150px #fff, 300px 50px #fff,
+    400px 200px #fff, 500px 100px #fff, 600px 250px #fff,
+    700px 80px #fff, 800px 180px #fff, 900px 300px #fff,
+    1000px 120px #fff, 1100px 220px #fff, 1200px 60px #fff,
+    50px 300px #fff, 150px 400px #fff, 250px 500px #fff,
+    350px 350px #fff, 450px 450px #fff, 550px 380px #fff,
+    650px 480px #fff, 750px 420px #fff, 850px 520px #fff,
+    950px 360px #fff, 1050px 460px #fff, 1150px 560px #fff,
+    1300px 200px #fff, 1400px 300px #fff, 1500px 100px #fff,
+    1600px 400px #fff, 1700px 150px #fff, 1800px 250px #fff;
+  width: 1px;
+  height: 1px;
+  animation: twinkle 3s infinite;
+}
+
+.stars2 {
+  background: transparent;
+  box-shadow: 
+    120px 80px #8A2BE2, 220px 180px #BA55D3, 320px 120px #9370DB,
+    420px 220px #8A2BE2, 520px 80px #BA55D3, 620px 280px #9370DB,
+    720px 140px #8A2BE2, 820px 240px #BA55D3, 920px 180px #9370DB,
+    1020px 140px #8A2BE2, 1120px 280px #BA55D3, 1220px 100px #9370DB,
+    80px 320px #8A2BE2, 180px 420px #BA55D3, 280px 360px #9370DB,
+    380px 460px #8A2BE2, 480px 380px #BA55D3, 580px 500px #9370DB,
+    680px 340px #8A2BE2, 780px 440px #BA55D3, 880px 400px #9370DB;
+  width: 2px;
+  height: 2px;
+  animation: twinkle 4s infinite 1s;
+}
+
+.stars3 {
+  background: transparent;
+  box-shadow: 
+    140px 120px #FF69B4, 240px 220px #FF1493, 340px 160px #FF69B4,
+    440px 260px #FF1493, 540px 120px #FF69B4, 640px 320px #FF1493,
+    740px 180px #FF69B4, 840px 280px #FF1493, 940px 140px #FF69B4,
+    1040px 240px #FF1493, 1140px 180px #FF69B4, 1240px 320px #FF1493,
+    100px 340px #FF69B4, 200px 440px #FF1493, 300px 380px #FF69B4,
+    400px 480px #FF1493, 500px 420px #FF69B4, 600px 520px #FF1493;
+  width: 1px;
+  height: 1px;
+  animation: twinkle 5s infinite 2s;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 768px) {
+  .stars,
+  .stars2,
+  .stars3 {
+    transform: scale(0.8);
+  }
+}

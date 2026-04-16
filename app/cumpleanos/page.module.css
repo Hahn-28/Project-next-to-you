@@ -1,0 +1,422 @@
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #BA55D3, #FF69B4, #8A2BE2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleGlow 3s ease-in-out infinite;
+  letter-spacing: 2px;
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(186, 85, 211, 0.5);
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(186, 85, 211, 0.8);
+    filter: brightness(1.2);
+  }
+}
+
+.messageContainer {
+  max-width: 700px;
+  text-align: center;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(138, 43, 226, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(186, 85, 211, 0.2);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1.5s ease-in;
+}
+
+.birthdayTitle {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #FF69B4;
+  text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+  animation: bounceIn 1s ease-out;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.message {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.signature {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #BA55D3;
+  margin-top: 2rem;
+  font-style: italic;
+  text-shadow: 0 0 10px rgba(186, 85, 211, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .messageContainer {
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .birthdayTitle {
+    font-size: 1.5rem;
+  }
+
+  .message {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .signature {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .messageContainer {
+    padding: 1rem;
+  }
+
+  .birthdayTitle {
+    font-size: 1.3rem;
+  }
+
+  .message {
+    font-size: 0.95rem;
+  }
+}
+
+/* Tortita de cumpleaños */
+.cakeContainer {
+  margin: 3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cake {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: cakeFloat 3s ease-in-out infinite;
+}
+
+/* Vela */
+.candle {
+  width: 15px;
+  height: 60px;
+  background: linear-gradient(to bottom, #FFD700, #FFA500);
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  margin-bottom: 5px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.flame {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 30px;
+  background: radial-gradient(ellipse at center, #FFF 0%, #FFD700 30%, #FF6347 60%, transparent 80%);
+  border-radius: 50% 50% 0 50%;
+  animation: flicker 1.5s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+              0 0 30px rgba(255, 99, 71, 0.6);
+}
+
+/* Capas del pastel */
+.layer1 {
+  width: 200px;
+  height: 60px;
+  background: linear-gradient(to bottom, #FF69B4, #FF1493);
+  border-radius: 15px 15px 0 0;
+  position: relative;
+  box-shadow: 0 5px 20px rgba(255, 105, 180, 0.5),
+              inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.layer1::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  right: 20px;
+  height: 8px;
+  background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+  border-radius: 5px;
+}
+
+.layer2 {
+  width: 220px;
+  height: 50px;
+  background: linear-gradient(to bottom, #BA55D3, #9370DB);
+  position: relative;
+  box-shadow: 0 5px 20px rgba(186, 85, 211, 0.5),
+              inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.layer2::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  right: 25px;
+  height: 8px;
+  background: linear-gradient(90deg, #FF69B4, #FFD700, #FF69B4);
+  border-radius: 5px;
+}
+
+.layer3 {
+  width: 250px;
+  height: 60px;
+  background: linear-gradient(to bottom, #8A2BE2, #6A0DAD);
+  border-radius: 0 0 20px 20px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(138, 43, 226, 0.6),
+              inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.layer3::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 30px;
+  right: 30px;
+  height: 8px;
+  background: linear-gradient(90deg, #FFD700, #FF69B4, #FFD700);
+  border-radius: 5px;
+}
+
+.decoration {
+  position: absolute;
+  bottom: 20px;
+  font-size: 2rem;
+  animation: decorationSpin 4s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 105, 180, 0.8));
+}
+
+/* Botón de Feliz Cumpleaños */
+.birthdayButton {
+  margin-top: 3rem;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #FF69B4, #BA55D3, #8A2BE2);
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(186, 85, 211, 0.7),
+              0 0 50px rgba(255, 105, 180, 0.5);
+  transition: all 0.3s ease;
+  animation: buttonPulse 2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.birthdayButton::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: rotate(45deg);
+  animation: buttonShine 3s linear infinite;
+}
+
+.birthdayButton:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 0 35px rgba(186, 85, 211, 1),
+              0 0 60px rgba(255, 105, 180, 0.8),
+              0 0 80px rgba(138, 43, 226, 0.6);
+}
+
+.birthdayButton:active {
+  transform: scale(0.98);
+}
+
+/* Animaciones */
+@keyframes cakeFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes flicker {
+  0%, 100% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(-50%) scale(1.1) rotate(-5deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.95) rotate(5deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(-50%) scale(1.05) rotate(-3deg);
+    opacity: 0.95;
+  }
+}
+
+@keyframes decorationSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(186, 85, 211, 0.7),
+                0 0 50px rgba(255, 105, 180, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(186, 85, 211, 1),
+                0 0 60px rgba(255, 105, 180, 0.8),
+                0 0 80px rgba(138, 43, 226, 0.6);
+  }
+}
+
+@keyframes buttonShine {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
+
+/* Responsive para la tortita */
+@media (max-width: 768px) {
+  .layer1 {
+    width: 160px;
+    height: 50px;
+  }
+
+  .layer2 {
+    width: 180px;
+    height: 40px;
+  }
+
+  .layer3 {
+    width: 200px;
+    height: 50px;
+  }
+
+  .candle {
+    width: 12px;
+    height: 50px;
+  }
+
+  .flame {
+    width: 16px;
+    height: 25px;
+    top: -20px;
+  }
+
+  .decoration {
+    font-size: 1.5rem;
+  }
+
+  .birthdayButton {
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .layer1 {
+    width: 130px;
+    height: 40px;
+  }
+
+  .layer2 {
+    width: 150px;
+    height: 35px;
+  }
+
+  .layer3 {
+    width: 170px;
+    height: 40px;
+  }
+
+  .candle {
+    width: 10px;
+    height: 40px;
+  }
+
+  .birthdayButton {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+}

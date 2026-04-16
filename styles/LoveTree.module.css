@@ -1,0 +1,291 @@
+.treeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 3rem 0;
+  animation: treeFloat 6s ease-in-out infinite;
+}
+
+.trunk {
+  width: 30px;
+  height: 120px;
+  background: linear-gradient(to bottom, #4a2511, #2d1810);
+  border-radius: 15px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5),
+              inset 0 0 10px rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.trunk::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: -10px;
+  width: 25px;
+  height: 8px;
+  background: linear-gradient(to right, transparent, #4a2511);
+  border-radius: 5px;
+}
+
+.trunk::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  width: 25px;
+  height: 8px;
+  background: linear-gradient(to left, transparent, #4a2511);
+  border-radius: 5px;
+}
+
+.canopy {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-bottom: -40px;
+  z-index: 2;
+}
+
+.heart {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  animation: heartBeat 3s ease-in-out infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: '';
+  position: absolute;
+  top: 50px;
+  width: 150px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, rgba(138, 43, 226, 0.1) 70%);
+  border-radius: 150px 150px 0 0;
+  filter: blur(2px);
+}
+
+.heart::before {
+  left: 75px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.6),
+              0 0 60px rgba(186, 85, 211, 0.4),
+              inset 0 0 30px rgba(255, 105, 180, 0.3);
+}
+
+.heart::after {
+  left: 75px;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.6),
+              0 0 60px rgba(186, 85, 211, 0.4),
+              inset 0 0 30px rgba(255, 105, 180, 0.3);
+}
+
+.canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.floatingHeart {
+  position: absolute;
+  color: rgba(255, 105, 180, 0.8);
+  animation: floatHearts 4s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+  z-index: 4;
+  pointer-events: none;
+}
+
+@keyframes treeFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes floatHearts {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-15px) rotate(10deg);
+    opacity: 1;
+  }
+}
+
+/* Efecto de brillo adicional alrededor del corazón */
+.canopy::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: glowPulseTree 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glowPulseTree {
+  0%, 100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .canopy,
+  .heart,
+  .canvas {
+    width: 250px;
+    height: 250px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 125px;
+    height: 170px;
+    border-radius: 125px 125px 0 0;
+  }
+
+  .heart::before {
+    left: 62.5px;
+  }
+
+  .heart::after {
+    left: 62.5px;
+  }
+
+  .trunk {
+    width: 25px;
+    height: 100px;
+  }
+
+  .canopy::before {
+    width: 270px;
+    height: 270px;
+  }
+}
+
+@media (max-width: 480px) {
+  .canopy,
+  .heart,
+  .canvas {
+    width: 200px;
+    height: 200px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 100px;
+    height: 140px;
+    border-radius: 100px 100px 0 0;
+  }
+
+  .heart::before {
+    left: 50px;
+  }
+
+  .heart::after {
+    left: 50px;
+  }
+
+  .trunk {
+    width: 20px;
+    height: 80px;
+  }
+
+  .treeContainer {
+    margin: 2rem 0;
+  }
+}
+
+/* Botón para mostrar el corazón de partículas */
+.heartButton {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #FF69B4, #BA55D3, #8A2BE2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(186, 85, 211, 0.6),
+              0 0 40px rgba(255, 105, 180, 0.4);
+  transition: all 0.3s ease;
+  animation: buttonGlow 2s ease-in-out infinite;
+  z-index: 10;
+  position: relative;
+}
+
+.heartButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(186, 85, 211, 0.9),
+              0 0 50px rgba(255, 105, 180, 0.7);
+}
+
+.heartButton:active {
+  transform: scale(0.95);
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(186, 85, 211, 0.6),
+                0 0 40px rgba(255, 105, 180, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(186, 85, 211, 0.9),
+                0 0 50px rgba(255, 105, 180, 0.7),
+                0 0 60px rgba(138, 43, 226, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .heartButton {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heartButton {
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+  }
+}
