@@ -93,10 +93,7 @@ body::before {
   }
 }
 
-/* Scroll suave */
-html {
-  scroll-behavior: smooth;
-}
+/* Scroll suave: controlado por data-scroll-behavior en el <html> del layout */
 
 @media (max-width: 768px) {
   .stars,
