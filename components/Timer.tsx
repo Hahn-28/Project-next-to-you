@@ -69,8 +69,8 @@ export default function Timer() {
     resizeCanvas();
 
     const particles: Particle[] = [];
-    const isMobile = window.innerWidth <= 768;
-    const scaleFactor = Math.min(heartCanvas.width, heartCanvas.height) / 1080;
+    let isMobile = window.innerWidth <= 768;
+    let scaleFactor = Math.min(heartCanvas.width, heartCanvas.height) / 1080;
     const mouse = {
       x: null as number | null,
       y: null as number | null,
@@ -92,6 +92,15 @@ export default function Timer() {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    const handleResize = () => {
+      resizeCanvas();
+      isMobile = window.innerWidth <= 768;
+      scaleFactor = Math.min(heartCanvas.width, heartCanvas.height) / 1080;
+      mouse.radius = config.mouse.radius * scaleFactor;
+      init();
+    };
+    window.addEventListener('resize', handleResize);
 
     // Fondo degradado en movimiento
     function drawBackground() {
@@ -209,7 +218,8 @@ export default function Timer() {
       const centerX = heartCanvas.width / 2;
       const centerY = heartCanvas.height / 2;
       const text = "Feliz Cumpleaños ❤️";
-      const fontSize = Math.min(heartCanvas.width, heartCanvas.height) * (isMobile ? config.text.fontSizeMobile : config.text.fontSizeDesktop);
+      const baseDimension = isMobile ? Math.max(heartCanvas.width, heartCanvas.height) : Math.min(heartCanvas.width, heartCanvas.height);
+      const fontSize = baseDimension * (isMobile ? config.text.fontSizeMobile : config.text.fontSizeDesktop);
 
       ctx.font = `bold ${fontSize}px Arial`;
       ctx.textAlign = 'center';
@@ -226,18 +236,33 @@ export default function Timer() {
       textCtx.textAlign = 'center';
       textCtx.textBaseline = 'middle';
       textCtx.fillStyle = 'white';
-      textCtx.fillText(text, centerX, centerY);
+      
+      textCtx.save();
+      textCtx.translate(centerX, centerY);
+      if (isMobile) {
+        textCtx.rotate(Math.PI / 2);
+      }
+      textCtx.fillText(text, 0, 0);
+      textCtx.restore();
 
       const textWidth = textCtx.measureText(text).width;
       const textHeight = fontSize * 1.2;
-      const startX = centerX - textWidth / 2;
-      const startY = centerY - textHeight / 2;
+      
+      let scanWidth = textWidth;
+      let scanHeight = textHeight;
+      if (isMobile) {
+        scanWidth = textHeight;
+        scanHeight = textWidth;
+      }
+
+      const startX = centerX - scanWidth / 2;
+      const startY = centerY - scanHeight / 2;
 
       const pixelData = textCtx.getImageData(0, 0, heartCanvas.width, heartCanvas.height).data;
       const step = isMobile ? config.text.pixelStepMobile : config.text.pixelStepDesktop;
 
-      for (let y = startY; y < startY + textHeight; y += step) {
-        for (let x = startX; x < startX + textWidth; x += step) {
+      for (let y = startY; y < startY + scanHeight; y += step) {
+        for (let x = startX; x < startX + scanWidth; x += step) {
           const pixelIndex = (Math.floor(y) * heartCanvas.width + Math.floor(x)) * 4;
           if (pixelData[pixelIndex + 3] > 128) {
             particles.push(new Particle(x, y, true));
@@ -253,12 +278,20 @@ export default function Timer() {
 
       const centerX = heartCanvas.width / 2;
       const centerY = heartCanvas.height / 2;
-      const scale = Math.min(heartCanvas.width, heartCanvas.height) * (isMobile ? config.heart.scaleFactor : config.heart.scaleFactorDesktop);
+      const baseDimension = isMobile ? Math.max(heartCanvas.width, heartCanvas.height) : Math.min(heartCanvas.width, heartCanvas.height);
+      const scale = baseDimension * (isMobile ? config.heart.scaleFactor : config.heart.scaleFactorDesktop);
 
       for (let i = 0; i < config.heart.particleCount; i++) {
         const t = Math.random() * Math.PI * 2;
-        const x = 16 * Math.pow(Math.sin(t), 3);
-        const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        let x = 16 * Math.pow(Math.sin(t), 3);
+        let y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+
+        // Rotar 90 grados en móvil para que se vea horizontalmente
+        if (isMobile) {
+          const tempX = x;
+          x = -y;
+          y = tempX;
+        }
 
         particles.push(new Particle(
           centerX + x * scale / 16,
@@ -287,6 +320,7 @@ export default function Timer() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

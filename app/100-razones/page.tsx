@@ -54,6 +54,7 @@ const TwinklingStars = () => (
 
 export default function RazonesPage() {
   const [randomReason, setRandomReason] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [showAllModal, setShowAllModal] = useState(false);
   const [unseenIndices, setUnseenIndices] = useState<number[]>(() => 
     Array.from({ length: reasons.length }, (_, i) => i)
@@ -66,6 +67,7 @@ export default function RazonesPage() {
   const handleRandomReason = () => {
     if (unseenIndices.length === 0) {
       setRandomReason("¡Has descubierto todas las razones! Pero inventaría 1000 más solo para ver tu sonrisa. Te amo ❤️✨");
+      setCurrentIndex(null);
       return;
     }
 
@@ -75,6 +77,7 @@ export default function RazonesPage() {
     // Lo removemos de la lista de pendientes para que no se repita
     setUnseenIndices(prev => prev.filter((_, i) => i !== randomIndex));
     setRandomReason(reasons[selectedReasonIndex]);
+    setCurrentIndex(selectedReasonIndex + 1);
   };
 
   return (
@@ -109,7 +112,7 @@ export default function RazonesPage() {
             100 Razones
           </h1>
           <p className="text-purple-200 text-sm sm:text-base md:text-xl font-light tracking-wide px-4">
-            Por las que te amo, mi Nicolle Cielo 
+            Por las que te amo, mi NIÑA HERMOSA
           </p>
         </motion.div>
 
@@ -158,7 +161,13 @@ export default function RazonesPage() {
                 )}
                 
                 <p className="text-xl sm:text-2xl md:text-3xl font-medium text-white leading-relaxed text-pretty">
-                  "{randomReason}"
+                  {currentIndex ? (
+                    <>
+                      <span className="text-purple-300 font-bold">TE AMO </span> {randomReason?.charAt(0).toLowerCase() + randomReason?.slice(1)}
+                    </>
+                  ) : (
+                    `"${randomReason}"`
+                  )}
                 </p>
               </motion.div>
             ) : (

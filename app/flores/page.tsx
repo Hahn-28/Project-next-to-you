@@ -1,15 +1,49 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 import './flores-jardin.css';
 
 const phrases = [
-  "Eres mi razón de sonreír...",
-  "Cada día te quiero más...",
-  "Mi lugar favorito es contigo...",
-  "Tus ojitos me vuelven loco...",
-  "Eres el amor de mi vida ❤️"
+  "Ten en cuenta\nKeep in mind",
+  "Nunca voy a dejar tu vida por mucho tiempo\nI'm never gonna leave your life ever long",
+  "En lo profundo de tu corazón todo el día\n하루 종일 너의 마음 깊은 곳\nharu jong-il neoui ma-eum gipeun got",
+  "Déjame quedarme\n계속 머물게 해 줘\ngyesok meomulge hae jwo",
+  "En cualquier momento y en cualquier lugar, para que puedas sentirme\n언제라도, 어디에도 날 느낄 수 있게\neonjerado, eodiedo nal neukkil su itge",
+  "Estarás bien\nYou'll be okay",
+  "Estaré a tu lado, siempre\n난 너의 편이 돼 줄게, 언제나\nnan neoui pyeoni dwae julge, eonjena",
+  "El lugar más cercano como ahora, déjame estar a tu lado\n지금처럼 가장 가까운 곳 네 곁에 있게 해 줘\njigeumcheoreom gajang gakkaun got ne gyeote itge hae jwo",
+  "Tengo curiosidad por tus heridas, lo conservaré\n너의 상처가 궁금해도 담아둘게\nneoui sangcheoga gunggeumhaedo damadulge",
+  "Así que quédate cerca\nSo stay close",
+  "Tu verdadero corazón es mío\n너의 진심은 내가 아니까\nneoui jinsimeun naega anikka",
+  "Solo da un paso más cerca, para poder contactarte\n한 발짝만 다가와 줘 네게 손 닿을 수 있게\nhan baljjangman dagawa jwo nege son daeul su itge",
+  "Así que, nena, te lo prometo\nSo, babe, I promise",
+  "Por siempre nunca me iré\nForever I'll never leave",
+  "No dudaré de tus torpes expresiones ocasionales\n가끔 서툰 표현도 난 의심 안 할게\ngakkeum seotun pyohyeondo nan uisim an halge",
+  "También puedo entender tus duras palabras, tu mirada me basta\n날 선 너의 단어도 이해할 수 있어 너의 눈빛이면 난 충분해\nnal seon neoui daneodo ihaehal su isseo neoui nunbichimyeon nan chungbunhae",
+  "No tienes que decir nada\n아무 말 안 해도 돼\namu mal an haedo dwae",
+  "Tu corazón, tu silencio, puedo sentirlo\n너의 마음도, 너의 침묵도 느낄 수 있어\nneoui ma-eumdo, neoui chimmukdo neukkil su isseo",
+  "Así que mantente cerca\nSo stay close",
+  "Tu verdadero corazón es mío\n너의 진심은 내가 아니까\nneoui jinsimeun naega anikka",
+  "Solo da un paso más cerca, para poder contactarte\n한 발짝만 다가와 줘 네게 손 닿을 수 있게\nhan baljjangman dagawa jwo nege son daeul su itge",
+  "Así que, nena, te lo prometo\nSo, babe, I promise",
+  "Nunca me iré\nI won't ever leave",
+  "Cuando estás abajo y cayendo\nWhen you're down and falling",
+  "Sepa que estaré allí, para que entiendas el significado de las lágrimas\nKnow that I'll be there 눈물의 의미를 알 수 있게\nKnow that I'll be there nunmurui uimireul al su itge",
+  "Seré tu paraguas bajo la lluvia torrencial\n쏟아지는 빗속에 너의 우산이 되어 줄게\nssodajineun bitsoge neoui usani doe-eo julge",
+  "Por siempre nunca me iré\nForever I'll never leave"
+];
+
+// Tiempos (en segundos) exactos para cada bloque de texto de la canción.
+// Aquí puedes modificar el número para ajustarlo perfectamente al inicio de cada frase.
+// El primer número '6' significa que la primera frase aparecerá en el segundo 6.
+const timings = [
+  6, 11, 17, 22, 25, // Estrofa 1
+  30, 35, 39, 49, // Pre-coro
+  55, 60, 67, 73, 77, // Coro 1
+  84, 89, 98, 102, // Estrofa 2
+  108, 112, 118, 124, 127, // Coro 2
+  156, 160, 170, 180 // Puente y final
 ];
 
 export default function FloresPage() {
@@ -18,30 +52,44 @@ export default function FloresPage() {
   const [phraseClass, setPhraseClass] = useState("phrase-hidden");
 
   useEffect(() => {
-    let index = 0;
-    
-    // Función para manejar el ciclo de cada frase
-    const playPhrase = () => {
-      setCurrentPhrase(phrases[index]);
-      setPhraseClass("phrase-active"); // Aparece
-      
-      // Tiempo hasta que empieza a desintegrarse
-      setTimeout(() => {
-        setPhraseClass("phrase-exit"); // Se desintegra
-      }, 5000);
+    const audio = audioRef.current;
+    if (!audio) return;
 
-      // Pasar a la siguiente frase después de la desintegración
-      index = (index + 1) % phrases.length;
+    let currentIdx = -1;
+    let exitTimeout: NodeJS.Timeout;
+
+    const handleTimeUpdate = () => {
+      const currentTime = audio.currentTime;
+
+      // Buscar cuál frase debería mostrarse en este segundo
+      let nextIdx = -1;
+      for (let i = 0; i < timings.length; i++) {
+        if (currentTime >= timings[i]) {
+          nextIdx = i;
+        } else {
+          break;
+        }
+      }
+
+      // Si entramos al tiempo de una nueva frase
+      if (nextIdx !== currentIdx && nextIdx !== -1) {
+        currentIdx = nextIdx;
+        setCurrentPhrase(phrases[currentIdx]);
+        setPhraseClass("phrase-active"); // Aparece
+
+        // Calculamos cuándo debe desintegrarse (1.5 segundos antes de que empiece la siguiente)
+        clearTimeout(exitTimeout);
+        const nextTime = currentIdx + 1 < timings.length ? timings[currentIdx + 1] : timings[currentIdx] + 6;
+        const duration = nextTime - timings[currentIdx];
+        const fadeOutDelay = Math.max((duration - 1.5) * 1000, 1000); 
+
+        exitTimeout = setTimeout(() => {
+          setPhraseClass("phrase-exit"); // Se desintegra
+        }, fadeOutDelay);
+      }
     };
 
-    // Iniciar la primera frase luego de que cargue un rato para dar tiempo a que comience la música
-    const initialTimeout = setTimeout(() => {
-      playPhrase();
-      // Y luego configuramos el intervalo continuo
-      const interval = setInterval(playPhrase, 8000);
-      
-      return () => clearInterval(interval);
-    }, 3000);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
     
     // Ocultar titulo (existente)
     const tituloTimeout = setTimeout(() => {
@@ -53,7 +101,8 @@ export default function FloresPage() {
     }, 14000);
 
     return () => {
-      clearTimeout(initialTimeout);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      clearTimeout(exitTimeout);
       clearTimeout(tituloTimeout);
     };
   }, []);
@@ -67,10 +116,14 @@ export default function FloresPage() {
         <ArrowLeft className="w-6 h-6 group-hover:-translate-x-1 transition-transform" />
       </Link>
       
-      <audio ref={audioRef} src="/flores_static/sound/ChristianBasso&HaienQiu-Flowers.mp3" autoPlay loop></audio>
+      <audio ref={audioRef} src="/flores_static/sound/Wonstein  Promise  español lyrics (Can this love be translated_ OST).mp3" autoPlay loop></audio>
       
-      <div id="lyrics" className={phraseClass}>
-        {currentPhrase}
+      <div id="lyrics" className={`${phraseClass} text-center`}>
+        {currentPhrase.split('\n').map((line, i) => (
+          <span key={i} className="block mb-1">
+            {line}
+          </span>
+        ))}
       </div>
       
     <h1 className="titulo">Estas flores amarillas son un reflejo de la alegría que traes a mi vida. <br /> <br />
